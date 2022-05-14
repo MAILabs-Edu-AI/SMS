@@ -1,18 +1,15 @@
-
-
-n =2
 P=[0 1 0 0;
-    sin(pi*n/5).^2 0 cos(pi*n/5).^2 0;
+    sin(pi/10).^2 0 cos(pi/10).^2 0;
     0 0 0 1;
-    cos(pi*n/10).^2 0 sin(pi*n/10).^2 0
+    cos(pi/20).^2 0 sin(pi/20).^2 0
     ];
-p0 = [1/2*sin(pi*n/6).^2 1/2*cos(pi*n/6).^2 1/2*sin(pi*n/12).^2 1/2*cos(pi*n/12).^2];
+p0 = [1/2*sin(pi/15).^2 1/2*cos(pi/15).^2 1/2*cos(pi/25).^2 1/2*sin(pi/25).^2];
 mc = dtmc(P);
 mc.P
 figure
 graphplot(mc,'ColorEdges',true);
 rng(42); % For reproducibility
-numSteps = 100;
+numSteps = 101;
 
 
 R = rand();
@@ -41,7 +38,7 @@ x0(number) = 1;
 %     end
 % end
 
-%p0 = [0.5, 0.5, 0, 0];
+%X0 = [0.5, 0.5, 0, 0];
 X = simulate(mc, numSteps, 'X0', x0);
 Pi_t = redistribute(mc,numSteps,'X0',p0);
 figure;
@@ -58,28 +55,11 @@ X_t(X(100)) = 1
 delta_t =  Pi_t(100) - X_t 
 display(transpose(delta_t) * delta_t / 3)
 
-t = linspace(1,numSteps);
-X_t_i = [];
+t = linspace(1,NumSteps);
 for i = 1:100
     X_t = zeros(1, 4)
-    X_t(X(i)) = 1;
-    X_t_i = [X_t_i; X_t];
+    X_t(X(i)) = 1
+    
+    
     
 end;
-
-figure();
-
-plot(t, Pi_t(1:100, 1), t, X_t_i(1:100, 1)) 
-title('X1')
-figure();
-
-plot(t, Pi_t(1:100, 2), t, X_t_i(1:100, 2)) 
-title('X2')
-figure();
-
-plot(t, Pi_t(1:100, 3), t, X_t_i(1:100, 3)) 
-title('X3')
-figure();
-
-plot(t, Pi_t(1:100, 4), t, X_t_i(1:100, 4))
-title('X4')
