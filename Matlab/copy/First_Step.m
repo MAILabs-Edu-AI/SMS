@@ -64,7 +64,7 @@ X = simulate(mc, numSteps, 'X0', x0);
 Pi_t = redistribute(mc,numSteps,'X0',x0);
 Pi_t_2 = [];
 
-pi_i = x0;
+pi_i = p0.';
 for i = 1:101
     pi_i = pi_i * P;
     Pi_t_2 = [Pi_t_2; pi_i];
@@ -127,17 +127,17 @@ title('Тривиальная оценка состояния 4');
 
 % Линейная оценка
 C = [1 2 3 4];
-sig = [1 10 100 1000] ;
+%sig = [1 10 100 1000] ;
 %sig = [0.01 0.015 0.02 0.025 ]
-%sig = [5 6 7 8 ] * 0;
+sig = [5 6 7 8 ]
 
 
 
-X_kalman_i = [];
+X_kalman_i = [x0];
 k_t_1 = diag(p0) - p0 * p0.';
-for i = 1:numSteps
-    X_kalman = x_kalman(P, p0,  Pi_t(i, 1:4).', i,  C, sig);
-    %k_t_1 = k_kalman(P, Pi_t_2(i, 1:4).', C, sig);
+for i = 2:numSteps
+    X_kalman = x_kalman(P, Pi_t_2(i, 1:4).', C, sig, k_t_1, X_kalman_i(i-1, 1:4).');
+    k_t_1 = k_kalman(P, Pi_t_2(i, 1:4).', C, sig, k_t_1);
     X_kalman_i = [X_kalman_i; X_kalman.'];
 end;
 %X_kalman_i = X_kalman_i./ max(X_kalman_i) * 10
@@ -179,9 +179,9 @@ title('Линейная оценка состояния 4');
 
 
 
-% Нелинейная оценка
+% Линейная оценка
 C = [1 2 3 4];
-sig = [1 10 100 1000] ;
+sig = [1 10 100 1000] * 0 ;
 %sig = [0.01 0.015 0.02 0.025 ]
 
 
@@ -189,7 +189,7 @@ sig = [1 10 100 1000] ;
 
 X_neline_i = [];
 for i = 1:numSteps
-    X_neline = x_neline(Pi_t_2(i, 1:4).', C, sig);
+    X_neline = x_neline(Pi_t(i, 1:4), C.', sig.');
     X_neline_i = [X_neline_i; X_neline.'];
 end;
 

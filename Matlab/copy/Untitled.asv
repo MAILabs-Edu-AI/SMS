@@ -1,0 +1,15 @@
+n = 1;
+P=[0 1 0 0;
+    sin(pi*n/5).^2 0 cos(pi*n/5).^2 0;
+    0 0 0 1;
+    cos(pi*n/10).^2 0 sin(pi*n/10).^2 0
+    ];
+p0 = [1/2*sin(pi*n/6).^2 1/2*cos(pi*n/6).^2 1/2*sin(pi*n/12).^2 1/2*cos(pi*n/12).^2].'
+p0
+X = p0;
+for i = 1:100
+    X = P * X;
+end
+
+X
+sum(X)
