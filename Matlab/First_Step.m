@@ -136,7 +136,7 @@ sig = [1 10 100 1000] ;
 X_kalman_i = [];
 k_t_1 = diag(p0) - p0 * p0.';
 for i = 1:numSteps
-    X_kalman = x_kalman(P, p0,  Pi_t(i, 1:4).', i,  C, sig);
+    X_kalman = x_kalman(P, p0,  X_t_i(i, 1:4).', i,  C, sig);
     %k_t_1 = k_kalman(P, Pi_t_2(i, 1:4).', C, sig);
     X_kalman_i = [X_kalman_i; X_kalman.'];
 end;
@@ -189,7 +189,7 @@ sig = [1 10 100 1000] ;
 
 X_neline_i = [];
 for i = 1:numSteps
-    X_neline = x_neline(Pi_t_2(i, 1:4).', C, sig);
+    X_neline = x_neline(X_t_i(i, 1:4).', C, sig);
     X_neline_i = [X_neline_i; X_neline.'];
 end;
 

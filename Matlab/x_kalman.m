@@ -10,20 +10,7 @@ function X_kalman = x_kalman(P, p0, x, t, C, sig)
     %K_C_mul = 
     %Y_X_sub = ;
     %C_K_R_inv = ;
-    X_kalman_not_lim  =  x + K_t * C.' * (inv(C * K_t * C.' + R)) * (Y - C * X_t);
-    for i = 1:4
-        if X_kalman_not_lim(i) > 1
-            X_kalman_not_lim(i) = 1
-        end
-        if X_kalman_not_lim(i) < 0
-            X_kalman_not_lim(i) = 0
-        end
-        X_kalman_not_lim(i) = round( X_kalman_not_lim(i));
-        
-    end
-    
-        
-    X_kalman = X_kalman_not_lim
+    X_kalman =  x + K_t * C.' * (inv(C * K_t * C.' + R)) * (Y - C * X_t);
     
     %X_kalman = X_kalman / sum(X_kalman);
 end
